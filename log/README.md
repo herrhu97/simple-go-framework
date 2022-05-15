@@ -4,6 +4,23 @@
 - Different log levels
 - Colorful log according to log level
 
+### Use
+~~~
+package main
+
+import (
+	log "github.com/herrhu97/simple-go-framework/log"
+)
+
+var logger *log.Logger
+
+func main() {
+	logger = log.New()
+
+  logger.Debug("Hello simple log!")
+}
+~~~
+
 ### TODO
 + [ ] Async write to file when in production mode 
 + [ ] Split log file by hour 
