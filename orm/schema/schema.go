@@ -14,7 +14,7 @@ type Field struct {
 	Tag  string // 额外的约束条件，比如"primary key"
 }
 
-// Schema represents a table of database，用于实现对象(object)和表(table)的转换
+// Schema represents a table of database，存储表的Fields用于实现对象(object)和表(table)的转换
 type Schema struct {
 	Model      interface{}       // 具体对象
 	Name       string            // 结构体的名称做表名
@@ -51,4 +51,14 @@ func Parse(dest interface{}, d dialect.Dialect) *Schema {
 		}
 	}
 	return schema
+}
+
+// RecordValues 根据schema中的Fields顺序，填充values顺序
+func (schema *Schema) RecordValues(dest interface{}) []interface{} {
+	destValue := reflect.Indirect(reflect.ValueOf(dest))
+	var fieldValues []interface{}
+	for _, field := range schema.Fields {
+		fieldValues = append(fieldValues, destValue.FieldByName(field.Name).Interface())
+	}
+	return fieldValues
 }

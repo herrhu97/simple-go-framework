@@ -2,6 +2,7 @@ package session
 
 import (
 	"database/sql"
+	"github.com/herrhu97/simple-go-framework/orm/clause"
 	"strings"
 
 	"github.com/herrhu97/simple-go-framework/orm/dialect"
@@ -12,9 +13,10 @@ import (
 // Session 用于实现与数据库的交互,执行sql语句
 type Session struct {
 	db       *sql.DB         // db.Open()返回的对象指针
-	sql      strings.Builder // 拼接sql用的sb对象
 	dialect  dialect.Dialect // go类型于具体数据库类型转换
 	refTable *schema.Schema  // 数据库中具体的表的类型与Go类型的转换
+	clause   clause.Clause   // 存储暂时的临时sql子句，拼凑大sql
+	sql      strings.Builder // 拼接sql用的sb对象
 	sqlVars  []interface{}   // 替代占位符的具体参数
 }
 
