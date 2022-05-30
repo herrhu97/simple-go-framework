@@ -1,3 +1,9 @@
 .idea
 
 gee.db
+
+*.pem
+*.key
+
+webfeature
+.DS_Store

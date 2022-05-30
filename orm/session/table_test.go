@@ -2,11 +2,10 @@ package session
 
 import (
 	"testing"
-
 )
 
 type User struct {
-	Name string `geeorm:"PRIMARY KEY"`
+	Name string `orm:"PRIMARY KEY"`
 	Age  int
 }
 

@@ -8,6 +8,7 @@ import (
 	"github.com/herrhu97/simple-go-framework/orm/session"
 )
 
+// Engine 执行交互前的准备工作（比如连接/测试数据库），交互后的收尾工作（关闭连接）
 type Engine struct {
 	db      *sql.DB
 	dialect dialect.Dialect

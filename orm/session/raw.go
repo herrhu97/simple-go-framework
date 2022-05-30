@@ -9,12 +9,13 @@ import (
 	"github.com/herrhu97/simple-go-framework/orm/schema"
 )
 
+// Session 用于实现与数据库的交互,执行sql语句
 type Session struct {
-	db       *sql.DB
-	sql      strings.Builder
-	dialect  dialect.Dialect
-	refTable *schema.Schema
-	sqlVars  []interface{}
+	db       *sql.DB         // db.Open()返回的对象指针
+	sql      strings.Builder // 拼接sql用的sb对象
+	dialect  dialect.Dialect // go类型于具体数据库类型转换
+	refTable *schema.Schema  // 数据库中具体的表的类型与Go类型的转换
+	sqlVars  []interface{}   // 替代占位符的具体参数
 }
 
 func New(db *sql.DB, dialect dialect.Dialect) *Session {
@@ -32,6 +33,7 @@ func (s *Session) DB() *sql.DB {
 	return s.db
 }
 
+// Raw 将pre-sql与sql变量填充到Session中
 func (s *Session) Raw(sql string, values ...interface{}) *Session {
 	s.sql.WriteString(sql)
 	s.sql.WriteString(" ")
