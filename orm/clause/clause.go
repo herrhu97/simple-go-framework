@@ -18,6 +18,9 @@ const (
 	LIMIT
 	WHERE
 	ORDERBY
+	UPDATE
+	DELETE
+	COUNT
 )
 
 // Set 增加子句
