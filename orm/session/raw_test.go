@@ -2,6 +2,7 @@ package session
 
 import (
 	"database/sql"
+	"log"
 	"os"
 	"testing"
 
@@ -43,5 +44,22 @@ func TestSession_QueryRows(t *testing.T) {
 	var count int
 	if err := row.Scan(&count); err != nil || count != 0 {
 		t.Fatal("failed to query db", err)
+	}
+}
+
+func TestRawGoTransaction(t *testing.T) {
+	db, _ := sql.Open("sqlite3", "gee.db")
+	defer func() { _ = db.Close() }()
+	_, _ = db.Exec("CREATE TABLE IF NOT EXISTS User(`Name` text);")
+
+	tx, _ := db.Begin()
+	_, err1 := tx.Exec("INSERT INTO User(`Name`) VALUES (?)", "Tom")
+	_, err2 := tx.Exec("INSERT INTO User(`Name`) VALUES (?)", "Jack")
+	if err1 != nil || err2 != nil {
+		_ = tx.Rollback()
+		log.Println("Rollback", err1, err2)
+	} else {
+		_ = tx.Commit()
+		log.Println("Commit")
 	}
 }
