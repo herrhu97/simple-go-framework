@@ -1,6 +1,6 @@
 package session
 
-import "github.com/herrhu97/simple-go-framework/orm/log"
+import "github.com/herrhu97/simple-go-framework/log"
 
 func (s *Session) Begin() (err error) {
 	log.Info("transaction begin")

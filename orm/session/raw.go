@@ -5,8 +5,8 @@ import (
 	"github.com/herrhu97/simple-go-framework/orm/clause"
 	"strings"
 
+	"github.com/herrhu97/simple-go-framework/log"
 	"github.com/herrhu97/simple-go-framework/orm/dialect"
-	"github.com/herrhu97/simple-go-framework/orm/log"
 	"github.com/herrhu97/simple-go-framework/orm/schema"
 )
 

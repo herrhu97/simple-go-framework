@@ -5,7 +5,7 @@ import (
 	"reflect"
 	"strings"
 
-	"github.com/herrhu97/simple-go-framework/orm/log"
+	"github.com/herrhu97/simple-go-framework/log"
 	"github.com/herrhu97/simple-go-framework/orm/schema"
 )
 

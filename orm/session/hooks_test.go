@@ -1,7 +1,7 @@
 package session
 
 import (
-	"github.com/herrhu97/simple-go-framework/orm/log"
+	"github.com/herrhu97/simple-go-framework/log"
 	"testing"
 )
 
