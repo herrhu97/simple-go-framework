@@ -1,6 +1,7 @@
 package gin
 
 import (
+	"github.com/herrhu97/simple-go-framework/log"
 	"net/http"
 	"strings"
 )
@@ -82,6 +83,7 @@ func (r *router) handle(c *Context) {
 	if n != nil {
 		c.Params = params
 		key := c.Method + "-" + n.pattern
+		log.Debugf("Method: %s Pattern %s", c.Method, n.pattern)
 		r.handlers[key](c)
 	} else {
 		c.String(http.StatusNotFound, "404 NOT FOUND: %s\n", c.Path)
