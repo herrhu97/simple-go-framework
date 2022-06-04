@@ -1,7 +1,6 @@
 package gin
 
 import (
-	"github.com/herrhu97/simple-go-framework/log"
 	"net/http"
 	"strings"
 )
@@ -80,12 +79,15 @@ func (r *router) getRoute(method string, path string) (*node, map[string]string)
 
 func (r *router) handle(c *Context) {
 	n, params := r.getRoute(c.Method, c.Path)
+
 	if n != nil {
-		c.Params = params
 		key := c.Method + "-" + n.pattern
-		log.Debugf("Method: %s Pattern %s", c.Method, n.pattern)
-		r.handlers[key](c)
+		c.Params = params
+		c.handlers = append(c.handlers, r.handlers[key]) // 本身node对应的handler也加入责任链中
 	} else {
-		c.String(http.StatusNotFound, "404 NOT FOUND: %s\n", c.Path)
+		c.handlers = append(c.handlers, func(c *Context) {
+			c.String(http.StatusNotFound, "404 NOT FOUND: %s\n", c.Path)
+		})
 	}
+	c.Next()
 }
