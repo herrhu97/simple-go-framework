@@ -29,6 +29,13 @@ func New() *Engine {
 	return engine
 }
 
+// Default use Logger() & Recovery middlewares
+func Default() *Engine {
+	engine := New()
+	engine.Use(Logger(), Recovery())
+	return engine
+}
+
 // Group is defined to create a new RouterGroup
 // remember all groups share the same Engine instance
 func (group *RouterGroup) Group(prefix string) *RouterGroup {
@@ -44,7 +51,7 @@ func (group *RouterGroup) Group(prefix string) *RouterGroup {
 
 func (group *RouterGroup) addRoute(method string, comp string, handler HandlerFunc) {
 	pattern := group.prefix + comp
-	log.Infof("Route %4s - %s", method, pattern)
+	log.Debugf("Route %4s - %s", method, pattern)
 	group.engine.router.addRoute(method, pattern, handler)
 }
 

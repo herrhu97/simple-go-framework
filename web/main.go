@@ -19,8 +19,7 @@ func FormatAsDate(t time.Time) string {
 }
 
 func main() {
-	r := gin.New()
-	r.Use(gin.Logger())
+	r := gin.Default()
 	r.SetFuncMap(template.FuncMap{
 		"FormatAsDate": FormatAsDate,
 	})
@@ -44,6 +43,11 @@ func main() {
 			"title": "gin",
 			"now":   time.Date(2019, 8, 17, 0, 0, 0, 0, time.UTC),
 		})
+	})
+
+	r.GET("/panic", func(c *gin.Context) {
+		names := []string{"herrhu"}
+		c.String(http.StatusOK, names[100])
 	})
 
 	r.Run(":9999")
