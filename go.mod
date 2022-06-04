@@ -1,11 +1,9 @@
 module github.com/herrhu97/simple-go-framework
 
-go 1.18
+go 1.16
 
 require (
-	github.com/gin-gonic/gin v1.7.7
 	github.com/mattn/go-sqlite3 v1.14.13
-	golang.org/x/sync v0.0.0-20220513210516-0976fa681c29
 )
 
 require (
