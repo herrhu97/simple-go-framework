@@ -2,8 +2,9 @@ package cache
 
 import (
 	"fmt"
-	"github.com/herrhu97/simple-go-framework/log"
 	"sync"
+
+	"github.com/herrhu97/simple-go-framework/log"
 )
 
 // A Group is a cache namespace and associated data loaded spread over
@@ -11,6 +12,7 @@ type Group struct {
 	name      string // 缓存的命名空间
 	getter    Getter // 缓存未命中时获取源数据的回调
 	mainCache cache  // 并发缓存
+	peers     PeerPicker
 }
 
 var (
@@ -59,6 +61,15 @@ func (g *Group) Get(key string) (ByteView, error) {
 
 // load 调用 getLocally（分布式场景下会调用 getFromPeer 从其他节点获取）
 func (g *Group) load(key string) (value ByteView, err error) {
+	if g.peers != nil {
+		if peer, ok := g.peers.PickPeer(key); ok {
+			if value, err = g.getFromPeer(peer, key); err == nil {
+				return value, nil
+			}
+			log.Debug("[GroupCache] Failed to get from peer", err)
+		}
+	}
+
 	return g.getLocally(key)
 }
 
@@ -90,4 +101,21 @@ type GetterFunc func(key string) ([]byte, error)
 // Get implements Getter interface function
 func (f GetterFunc) Get(key string) ([]byte, error) {
 	return f(key)
+}
+
+// RegisterPeers registers a PeerPicker for choosing remote peer
+func (g *Group) RegisterPeers(peers PeerPicker) {
+	if g.peers != nil {
+		panic("RegisterPeerPicker called more than once")
+	}
+	g.peers = peers
+}
+
+
+func (g *Group) getFromPeer(peer PeerGetter, key string) (ByteView, error) {
+	bytes, err := peer.Get(g.name, key)
+	if err != nil {
+		return ByteView{}, err
+	}
+	return ByteView{b: bytes}, nil
 }

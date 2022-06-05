@@ -1,8 +1,9 @@
 package cache
 
 import (
-	"github.com/herrhu97/simple-go-framework/cache/lru"
 	"sync"
+
+	"github.com/herrhu97/simple-go-framework/cache/lru"
 )
 
 type cache struct {
